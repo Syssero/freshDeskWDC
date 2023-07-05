@@ -1,0 +1,24 @@
+#topBanner{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    color: white;
+    text-align: center;
+}
+
+#title{
+    color: white;
+    text-align: center;
+    margin: 10px;
+}
+
+img {
+    max-width: 500px;
+}
+
+label {
+    color: white;
+}
+
+body{
+    background-color: #17252b;
+}
