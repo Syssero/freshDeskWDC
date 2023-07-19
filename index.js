@@ -116,11 +116,14 @@
             id: "pending_since",
             alias: "pending_since",
             dataType: tableau.dataTypeEnum.datetime
-        }, {
+        },
+		{
             id: "syssero_internal_only_project_name",
             alias: "syssero_internal_only_project_name",
             dataType: tableau.dataTypeEnum.string
-        }, {
+        }, 
+		//added for #6034
+		{
             id: "details",
             alias: "details",
             dataType: tableau.dataTypeEnum.string
@@ -128,6 +131,78 @@
             id: "request_type",
             alias: "request_type",
             dataType: tableau.dataTypeEnum.string
+        },
+		//added for #7009
+		{
+            id: "email_config_id",
+            alias: "email_config_id",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "group_id",
+            alias: "group_id",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "association_type",
+            alias: "association_type",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "product_id",
+            alias: "product_id",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "first_response_due_by",
+            alias: "first_response_due_by",
+            dataType: tableau.dataTypeEnum.datetime
+        }, {
+            id: "ticket_escalated",
+            alias: "ticket_escalated",
+            dataType: tableau.dataTypeEnum.bool
+        }, {
+            id: "syssero_support_area",
+            alias: "syssero_support_area",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "key_impacted_module",
+            alias: "key_impacted_module",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "effective_date",
+            alias: "effective_date",
+            dataType: tableau.dataTypeEnum.datetime
+        }, {
+            id: "available_for_resourcing",
+            alias: "available_for_resourcing",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "associated_tickets_count",
+            alias: "associated_tickets_count",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "internal_agent_id",
+            alias: "internal_agent_id",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "internal_group_id",
+            alias: "internal_group_id",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "next_response_due_by",
+            alias: "next_response_due_by",
+            dataType: tableau.dataTypeEnum.datetime
+        }, {
+            id: "next_response_escalated",
+            alias: "next_response_escalated",
+            dataType: tableau.dataTypeEnum.bool
+        },
+		//added for #7090
+		{
+            id: "estimated_hours",
+            alias: "estimated_hours",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "systics_originated",
+            alias: "systics_originated",
+            dataType: tableau.dataTypeEnum.bool
         },];
 
         var tableSchema = {
@@ -204,7 +279,24 @@
                             "pending_since": response[i].stats.pending_since == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.pending_since).format(dateFormat),
 							"syssero_internal_only_project_name": (response[i].custom_fields.cf_syssero_internal_only_client_name == null ? 'Empty' : response[i].custom_fields.cf_syssero_internal_only_client_name),
 							"details": (response[i].custom_fields.cf_details == null ? 'Empty' : response[i].custom_fields.cf_details),
-							"request_type": (response[i].custom_fields.cf_request_type == null ? 'Empty' : response[i].custom_fields.cf_request_type)
+							"request_type": (response[i].custom_fields.cf_request_type == null ? 'Empty' : response[i].custom_fields.cf_request_type),
+							"email_config_id": response[i].email_config_id,
+							"group_id": response[i].group_id,
+							"association_type": response[i].association_type,
+							"product_id": response[i].product_id,
+							"first_response_due_by": response[i].fr_due_by == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].fr_due_by).format(dateFormat),
+							"ticket_escalated": response[i].is_escalated,
+							"syssero_support_area": (response[i].custom_fields.cf_syssero_support_area == null ? 'Empty' : response[i].custom_fields.cf_syssero_support_area),
+							"key_impacted_module": (response[i].custom_fields.cf_key_impacted_module == null ? 'Empty' : response[i].custom_fields.cf_key_impacted_module),
+							"effective_date": response[i].custom_fields.cf_effective_date == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].custom_fields.cf_effective_date).format(dateFormat),
+							"available_for_resourcing": (response[i].custom_fields.cf_available_for_resourcing == null ? 'Empty' : response[i].custom_fields.cf_available_for_resourcing),
+							"associated_tickets_count": response[i].associated_tickets_count,
+							"internal_agent_id": response[i].internal_agent_id,
+							"internal_group_id": response[i].internal_group_id,
+							"next_response_due_by": response[i].nr_due_by == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].nr_due_by).format(dateFormat),
+							"next_response_escalated": response[i].nr_escalated,
+							"estimated_hours": response[i].custom_fields.cf_estimated_hours,
+							"systics_originated": response[i].custom_fields.cf_systics_originated
                         });
                     }
 
