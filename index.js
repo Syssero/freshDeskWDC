@@ -227,7 +227,7 @@
             //console.log(agent_array[0])
             $.ajax({
                 type: "GET",
-                url: `https://syssero.freshdesk.com/api/v2/tickets?updated_since=2022-10-23&page=${x}&per_page=100&include=stats,requester,company`,
+                url: `https://syssero.freshdesk.com/api/v2/tickets?updated_since=2023-04-23&page=${x}&per_page=100&include=stats,requester,company`,
                 dataType: 'json',
                 headers: {
                     "Authorization": "Basic " + btoa(apiKey + ":123")
@@ -321,7 +321,7 @@
 
             $.ajax({
                 type: "GET",
-                url: `https://syssero.freshdesk.com/api/v2/agents?&page=${x}`,
+                url: `https://syssero.freshdesk.com/api/v2/agents?&page=${x}&per_page=100`,
                 dataType: 'json',
                 headers: {
                     "Authorization": "Basic " + btoa(apiKey + ":123")
