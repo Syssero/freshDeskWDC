@@ -223,7 +223,7 @@
             //console.log(agent_array[0])
             $.ajax({
                 type: "GET",
-                url: `https://syssero.freshdesk.com/api/v2/tickets?updated_since=2015-01-19&page=${x}&include=stats,requester,company`,
+                url: `https://syssero.freshdesk.com/api/v2/tickets?updated_since=2022-01-01&page=${x}&include=stats,requester,company`,
                 dataType: 'json',
                 headers: {
                     "Authorization": "Basic " + btoa(apiKey + ":123")
