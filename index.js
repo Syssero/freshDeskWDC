@@ -221,6 +221,7 @@
 		var ticketUpdatedSince = new Date();
 		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 5);
 		ticketUpdatedSince = ticketUpdatedSince.toISOString().slice(0, 10);
+		var sleepCount = 1;
 
         function loop(x, agent_array) {
 
@@ -305,7 +306,12 @@
                     }
 
                     table.appendRows(tableData);
-					sleep(3000);
+					if(x === sleepCount * 20) {
+						sleepCount++;
+						sleep(3000);
+					}
+					console.log(`x: ${x}`);
+					console.log(`sleepCount: ${sleepCount}`);
                     loop(x + 1, agent_array)
 
                 } else { doneCallback(); }
