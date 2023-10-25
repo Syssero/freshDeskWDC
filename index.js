@@ -305,7 +305,7 @@
                     }
 
                     table.appendRows(tableData);
-					await sleep(2000);
+					sleep(2000);
                     loop(x + 1, agent_array)
 
                 } else { doneCallback(); }
