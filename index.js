@@ -219,7 +219,7 @@
     myConnector.getData = function (table, doneCallback) {
         const apiKey = tableau.password;
 		var ticketUpdatedSince = new Date();
-		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 3);
+		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 12);
 		ticketUpdatedSince = ticketUpdatedSince.toISOString().slice(0, 10);
 
         function loop(x, agent_array) {
@@ -305,6 +305,7 @@
                     }
 
                     table.appendRows(tableData);
+					await sleep(2000);
                     loop(x + 1, agent_array)
 
                 } else { doneCallback(); }
@@ -314,7 +315,9 @@
             });
         }
 
-
+		function sleep(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
 
 
         function loop_agents(x, arr) {
