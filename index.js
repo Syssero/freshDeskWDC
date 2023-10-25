@@ -306,7 +306,7 @@
                     }
 
                     table.appendRows(tableData);
-					if(x === sleepCount * 20) {
+					if(x == sleepCount * 20) {
 						sleepCount++;
 						sleep(3000);
 					}
