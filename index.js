@@ -308,7 +308,7 @@
                     table.appendRows(tableData);
 					if(x === sleepCount * 20) {
 						sleepCount++;
-						sleep(3000);
+						sleep(60000);
 					}
 					console.log(`x: ${x}`);
 					console.log(`sleepCount: ${sleepCount}`);
