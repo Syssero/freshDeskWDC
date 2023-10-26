@@ -228,7 +228,7 @@
             //console.log(agent_array[0])
             $.ajax({
                 type: "GET",
-                url: `https://syssero.freshdesk.com/api/v2/tickets?updated_since=${ticketUpdatedSince}&page=${x}&per_page=100&include=stats,requester,company`,
+                url: `https://syssero.freshdesk.com/api/v2/tickets?updated_since=2020-01-01&page=${x}&per_page=100&include=stats,requester,company`,
                 dataType: 'json',
                 headers: {
                     "Authorization": "Basic " + btoa(apiKey + ":123")
@@ -306,13 +306,6 @@
                     }
 
                     table.appendRows(tableData);
-					/*if(x === sleepCount * 20) {
-						sleepCount++;
-						sleep(60000);
-					}*/
-					console.log(`x: ${x}`);
-					//console.log(`sleepCount: ${sleepCount}`);
-					sleep(3000);
                     loop(x + 1, agent_array)
 
                 } else { doneCallback(); }
@@ -321,11 +314,6 @@
 
             });
         }
-
-		function sleep(ms) {
-			return new Promise(resolve => setTimeout(resolve, ms));
-		}
-
 
         function loop_agents(x, arr) {
 
