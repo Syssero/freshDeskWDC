@@ -219,7 +219,7 @@
     myConnector.getData = function (table, doneCallback) {
         const apiKey = tableau.password;
 		var ticketUpdatedSince = new Date();
-		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 5);
+		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 4);
 		ticketUpdatedSince = ticketUpdatedSince.toISOString().slice(0, 10);
 		var sleepCount = 1;
 
@@ -306,12 +306,13 @@
                     }
 
                     table.appendRows(tableData);
-					if(x === sleepCount * 10) {
+					/*if(x === sleepCount * 10) {
 						sleepCount++;
 						sleep(60000);
-					}
+					}*/
 					console.log(`x: ${x}`);
-					console.log(`sleepCount: ${sleepCount}`);
+					//console.log(`sleepCount: ${sleepCount}`);
+					sleep(3000);
                     loop(x + 1, agent_array)
 
                 } else { doneCallback(); }
