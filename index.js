@@ -219,7 +219,7 @@
     myConnector.getData = function (table, doneCallback) {
         const apiKey = tableau.password;
 		var ticketUpdatedSince = new Date();
-		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 3);
+		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 5);
 		ticketUpdatedSince = ticketUpdatedSince.toISOString().slice(0, 10);
 		var sleepCount = 1;
 
