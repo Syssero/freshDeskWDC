@@ -218,10 +218,11 @@
 
     myConnector.getData = function (table, doneCallback) {
         const apiKey = tableau.password;
-		var ticketUpdatedSince = new Date();
-		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 4);
-		ticketUpdatedSince = ticketUpdatedSince.toISOString().slice(0, 10);
-		var sleepCount = 1;
+		// var ticketUpdatedSince = new Date();
+		// ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 4);
+		// ticketUpdatedSince = ticketUpdatedSince.toISOString().slice(0, 10);
+        // ticketUpdatedSince = '2020-01-01'
+	
 
         function loop(x, agent_array) {
 
@@ -234,22 +235,17 @@
                     "Authorization": "Basic " + btoa(apiKey + ":123")
                 }
             }).done(function (resp, status, xhr) {
-                //console.log(customers)
+              
                 console.log(x)
                 var response = resp,
                     tableData = [];
-                // console.log(xhr)
-                //console.log(agent_array.filter(agent => agent.id == '42019954398')[0].contact.name)
 
                 if (resp.length > 0) {
                     var dateFormat = "Y-MM-DD HH:mm:ss";
                     // Iterate over the JSON object
                     for (var i = 0, len = response.length; i < len; i++) {
 
-                        // if (i == 0 && response[i].owner_id != null) {
-                        //     console.log((customers.filter(c => c.customer.id == response[i].owner_id))[0].customer.name)
-                        //     console.log(response[i].owner_id)
-                        // }
+                       
 
                         var priority_map = ['Low', 'Medium', 'High', 'Urgent']
 
