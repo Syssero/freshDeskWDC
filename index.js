@@ -219,7 +219,7 @@
     myConnector.getData = function (table, doneCallback) {
         const apiKey = tableau.password;
 		var ticketUpdatedSince = new Date();
-		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 4);
+		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 6);
 		ticketUpdatedSince = ticketUpdatedSince.toISOString().slice(0, 10);
         // ticketUpdatedSince = '2020-01-01'
 	
@@ -227,88 +227,90 @@
         function loop(x, agent_array) {
 
             //console.log(agent_array[0])
-            $.ajax({
-                type: "GET",
-                url: `https://syssero.freshdesk.com/api/v2/tickets?updated_since=${ticketUpdatedSince}&page=${x}&per_page=100&include=stats,requester,company`,
-                dataType: 'json',
-                headers: {
-                    "Authorization": "Basic " + btoa(apiKey + ":123")
-                }
-            }).done(function (resp, status, xhr) {
-              
-                console.log(x)
-                var response = resp,
-                    tableData = [];
+            setTimeout(function () {
+				$.ajax({
+					type: "GET",
+					url: `https://syssero.freshdesk.com/api/v2/tickets?updated_since=${ticketUpdatedSince}&page=${x}&per_page=100&include=stats,requester,company`,
+					dataType: 'json',
+					headers: {
+						"Authorization": "Basic " + btoa(apiKey + ":123")
+					}
+				}).done(function (resp, status, xhr) {
+				  
+					console.log(x)
+					var response = resp,
+						tableData = [];
 
-                if (resp.length > 0) {
-                    var dateFormat = "Y-MM-DD HH:mm:ss";
-                    // Iterate over the JSON object
-                    for (var i = 0, len = response.length; i < len; i++) {
+					if (resp.length > 0) {
+						var dateFormat = "Y-MM-DD HH:mm:ss";
+						// Iterate over the JSON object
+						for (var i = 0, len = response.length; i < len; i++) {
 
-                       
+						   
 
-                        var priority_map = ['Low', 'Medium', 'High', 'Urgent']
+							var priority_map = ['Low', 'Medium', 'High', 'Urgent']
 
-                        var source_map = ['Email', 'Portal', 'Phone']
+							var source_map = ['Email', 'Portal', 'Phone']
 
-                        var status_map = ['Open', 'Pending', 'Resolved', 'Closed', '', '', 'Pending in Sandbox Tenant', 'Pending in Implementation Tenant', 'Pending in Preview Tenant', 'On hold', 'Roadmap']
+							var status_map = ['Open', 'Pending', 'Resolved', 'Closed', '', '', 'Pending in Sandbox Tenant', 'Pending in Implementation Tenant', 'Pending in Preview Tenant', 'On hold', 'Roadmap']
 
-                        tableData.push({
-                            "id": (response[i].id).toString(),
-                            "source": source_map[response[i].source - 1],
-                            "priority_name": priority_map[response[i].priority - 1],
-                            "created_at": moment(response[i].created_at).format(dateFormat),
-                            "updated_at": moment(response[i].updated_at).format(dateFormat),
-                            "first_response_escalated": response[i].fr_escalated,
-                            "documentation_required": (response[i].custom_fields.cf_documentation_required == null ? 'Empty' : response[i].custom_fields.cf_documentation_required),
-                            "ticket_type": (response[i].type == null ? 'Empty' : response[i].type),
-                            "company_id": response[i].company.id,
-                            "company_name": response[i].company.name,
-                            "due_by": moment(response[i].due_by).format(dateFormat),
-                            "requester_name": response[i].requester.name,
-                            "requester_id": (response[i].requester.id).toString(),
-                            "subject": response[i].subject,
-                            "status_name": status_map[response[i].status - 2],
-                            "responder_name": agent_array.filter(agent => agent.id == response[i].responder_id)[0] == undefined ? 'no agent' : agent_array.filter(agent => agent.id == response[i].responder_id)[0].contact.name,
-                            "agent_responded_at": response[i].stats.agent_responded_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.agent_responded_at).format(dateFormat),
-                            "requester_responded_at": response[i].stats.requester_responded_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.requester_responded_at).format(dateFormat),
-                            "first_responded_at": response[i].stats.first_responded_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.first_responded_at).format(dateFormat),
-                            "status_updated_at": response[i].stats.status_updated_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.status_updated_at).format(dateFormat),
-                            "reopened_at": response[i].stats.reopened_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.reopened_at).format(dateFormat),
-                            "resolved_at": response[i].stats.resolved_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.resolved_at).format(dateFormat),
-                            "closed_at": response[i].stats.closed_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.closed_at).format(dateFormat),
-                            "pending_since": response[i].stats.pending_since == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.pending_since).format(dateFormat),
-							"syssero_internal_only_project_name": (response[i].custom_fields.cf_syssero_internal_only_client_name == null ? 'Empty' : response[i].custom_fields.cf_syssero_internal_only_client_name),
-							"details": (response[i].custom_fields.cf_details == null ? 'Empty' : response[i].custom_fields.cf_details),
-							"request_type": (response[i].custom_fields.cf_request_type == null ? 'Empty' : response[i].custom_fields.cf_request_type),
-							"email_config_id": response[i].email_config_id,
-							"group_id": response[i].group_id,
-							"association_type": response[i].association_type,
-							"product_id": response[i].product_id,
-							"first_response_due_by": response[i].fr_due_by == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].fr_due_by).format(dateFormat),
-							"ticket_escalated": response[i].is_escalated,
-							"syssero_support_area": (response[i].custom_fields.cf_syssero_support_area == null ? 'Empty' : response[i].custom_fields.cf_syssero_support_area),
-							"key_impacted_module": (response[i].custom_fields.cf_key_impacted_module == null ? 'Empty' : response[i].custom_fields.cf_key_impacted_module),
-							"effective_date": response[i].custom_fields.cf_effective_date == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].custom_fields.cf_effective_date).format(dateFormat),
-							"available_for_resourcing": (response[i].custom_fields.cf_available_for_resourcing == null ? 'Empty' : response[i].custom_fields.cf_available_for_resourcing),
-							"associated_tickets_count": response[i].associated_tickets_count,
-							"internal_agent_id": response[i].internal_agent_id,
-							"internal_group_id": response[i].internal_group_id,
-							"next_response_due_by": response[i].nr_due_by == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].nr_due_by).format(dateFormat),
-							"next_response_escalated": response[i].nr_escalated,
-							"estimated_hours": response[i].custom_fields.cf_estimated_hours,
-							"systics_originated": response[i].custom_fields.cf_systics_originated
-                        });
-                    }
+							tableData.push({
+								"id": (response[i].id).toString(),
+								"source": source_map[response[i].source - 1],
+								"priority_name": priority_map[response[i].priority - 1],
+								"created_at": moment(response[i].created_at).format(dateFormat),
+								"updated_at": moment(response[i].updated_at).format(dateFormat),
+								"first_response_escalated": response[i].fr_escalated,
+								"documentation_required": (response[i].custom_fields.cf_documentation_required == null ? 'Empty' : response[i].custom_fields.cf_documentation_required),
+								"ticket_type": (response[i].type == null ? 'Empty' : response[i].type),
+								"company_id": response[i].company.id,
+								"company_name": response[i].company.name,
+								"due_by": moment(response[i].due_by).format(dateFormat),
+								"requester_name": response[i].requester.name,
+								"requester_id": (response[i].requester.id).toString(),
+								"subject": response[i].subject,
+								"status_name": status_map[response[i].status - 2],
+								"responder_name": agent_array.filter(agent => agent.id == response[i].responder_id)[0] == undefined ? 'no agent' : agent_array.filter(agent => agent.id == response[i].responder_id)[0].contact.name,
+								"agent_responded_at": response[i].stats.agent_responded_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.agent_responded_at).format(dateFormat),
+								"requester_responded_at": response[i].stats.requester_responded_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.requester_responded_at).format(dateFormat),
+								"first_responded_at": response[i].stats.first_responded_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.first_responded_at).format(dateFormat),
+								"status_updated_at": response[i].stats.status_updated_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.status_updated_at).format(dateFormat),
+								"reopened_at": response[i].stats.reopened_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.reopened_at).format(dateFormat),
+								"resolved_at": response[i].stats.resolved_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.resolved_at).format(dateFormat),
+								"closed_at": response[i].stats.closed_at == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.closed_at).format(dateFormat),
+								"pending_since": response[i].stats.pending_since == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].stats.pending_since).format(dateFormat),
+								"syssero_internal_only_project_name": (response[i].custom_fields.cf_syssero_internal_only_client_name == null ? 'Empty' : response[i].custom_fields.cf_syssero_internal_only_client_name),
+								"details": (response[i].custom_fields.cf_details == null ? 'Empty' : response[i].custom_fields.cf_details),
+								"request_type": (response[i].custom_fields.cf_request_type == null ? 'Empty' : response[i].custom_fields.cf_request_type),
+								"email_config_id": response[i].email_config_id,
+								"group_id": response[i].group_id,
+								"association_type": response[i].association_type,
+								"product_id": response[i].product_id,
+								"first_response_due_by": response[i].fr_due_by == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].fr_due_by).format(dateFormat),
+								"ticket_escalated": response[i].is_escalated,
+								"syssero_support_area": (response[i].custom_fields.cf_syssero_support_area == null ? 'Empty' : response[i].custom_fields.cf_syssero_support_area),
+								"key_impacted_module": (response[i].custom_fields.cf_key_impacted_module == null ? 'Empty' : response[i].custom_fields.cf_key_impacted_module),
+								"effective_date": response[i].custom_fields.cf_effective_date == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].custom_fields.cf_effective_date).format(dateFormat),
+								"available_for_resourcing": (response[i].custom_fields.cf_available_for_resourcing == null ? 'Empty' : response[i].custom_fields.cf_available_for_resourcing),
+								"associated_tickets_count": response[i].associated_tickets_count,
+								"internal_agent_id": response[i].internal_agent_id,
+								"internal_group_id": response[i].internal_group_id,
+								"next_response_due_by": response[i].nr_due_by == null ? moment('1800-01-01').format(dateFormat) : moment(response[i].nr_due_by).format(dateFormat),
+								"next_response_escalated": response[i].nr_escalated,
+								"estimated_hours": response[i].custom_fields.cf_estimated_hours,
+								"systics_originated": response[i].custom_fields.cf_systics_originated
+							});
+						}
 
-                    table.appendRows(tableData);
-                    loop(x + 1, agent_array)
+						table.appendRows(tableData);
+						loop(x + 1, agent_array)
 
-                } else { doneCallback(); }
+					} else { doneCallback(); }
 
 
 
-            });
+				});
+			}, 1500); // 1500 millisecond delay
         }
 
         function loop_agents(x, arr) {
