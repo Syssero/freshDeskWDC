@@ -219,7 +219,7 @@
     myConnector.getData = function (table, doneCallback) {
         const apiKey = tableau.password;
 		var ticketUpdatedSince = new Date();
-		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 6);
+		ticketUpdatedSince.setMonth(ticketUpdatedSince.getMonth() - 12);
 		ticketUpdatedSince = ticketUpdatedSince.toISOString().slice(0, 10);
         // ticketUpdatedSince = '2020-01-01'
 	
