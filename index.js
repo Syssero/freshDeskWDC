@@ -252,7 +252,7 @@
 
 							var source_map = ['Email', 'Portal', 'Phone']
 
-							var status_map = ['Open', 'Pending', 'Resolved', 'Closed', '', '', 'Pending in Sandbox Tenant', 'Pending in Implementation Tenant', 'Pending in Preview Tenant', 'On hold', 'Roadmap']
+							var status_map = ['Open', 'Pending', 'Resolved', 'Closed', 'Awaiting Client Approval', 'Pending in Sandbox Tenant', 'Pending in Implementation Tenant', 'Pending in Preview Tenant', 'On Hold', 'Roadmap']
 
 							tableData.push({
 								"id": (response[i].id).toString(),
